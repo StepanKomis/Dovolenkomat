@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  vacation_request: one
+  approver: one
+  stage: 1
+  decision: 1
+  comment: MyString
+
+two:
+  vacation_request: two
+  approver: two
+  stage: 1
+  decision: 1
+  comment: MyString
