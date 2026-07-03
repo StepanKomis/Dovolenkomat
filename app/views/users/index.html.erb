@@ -1,6 +1,6 @@
 <h1>Users</h1>
 
-<%= link_to "New user", new_user_path %>
+<%= link_to "New user", new_user_path, class: "btn btn-primary" %>
 
 <table>
   <thead>
@@ -18,9 +18,9 @@
         <td><%= user.email %></td>
         <td><%= user.role %></td>
         <td>
-          <%= link_to "Edit", edit_user_path(user) %>
+          <%= link_to "Edit", edit_user_path(user), class: "btn btn-secondary btn-sm" %>
           <% unless user == current_user %>
-            <%= button_to "Delete", user_path(user), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+            <%= button_to "Delete", user_path(user), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "Are you sure?" } %>
           <% end %>
         </td>
       </tr>

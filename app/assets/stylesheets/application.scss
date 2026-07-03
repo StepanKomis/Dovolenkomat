@@ -2,21 +2,38 @@
 
 @use "sass:map";
 
-$color-bg: #f5f6f8;
-$color-text: #1f2430;
-$color-dark: #1f2430;
-$color-primary: #2d5be3;
-$color-primary-hover: #2249c0;
-$color-border: #e0e2e7;
-$color-muted: #6b7280;
-$radius: 4px;
+// Color
+
+$navy-900: #0f1b33;
+$navy-700: #16264d;
+$navy-600: #223768;
+$amber-500: #c4801f;
+
+$bg: #f6f7fb;
+$surface: #ffffff;
+$ink: #1b2333;
+$ink-muted: #5b6478;
+$border: #e1e4ec;
+
+$radius: 6px;
 
 $status-colors: (
-  pending: (bg: #fff3cd, fg: #8a6100),
-  hr_approved: (bg: #dbe8ff, fg: #1d4ed8),
-  approved: (bg: #d7f5df, fg: #1f7a3d),
-  rejected: (bg: #fbe4e2, fg: #a3271f),
+  pending: (bg: #fcefd9, fg: #b9770e),
+  hr_approved: (bg: #e4ecfa, fg: #2f5fa8),
+  approved: (bg: #dff3e7, fg: #1f7a4d),
+  rejected: (bg: #fbe7e5, fg: #b23b3b),
 );
+
+// Type
+
+$font-heading: Charter, "Iowan Old Style", Georgia, serif;
+$font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
 
 * {
   box-sizing: border-box;
@@ -24,13 +41,40 @@ $status-colors: (
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  background: $color-bg;
-  color: $color-text;
+  font-family: $font-body;
+  background: $bg;
+  color: $ink;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3 {
+  font-family: $font-heading;
+  color: $navy-900;
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin-top: 2rem;
+}
+
+h3 {
+  font-size: 1.05rem;
+}
+
+a {
+  color: $navy-700;
 }
 
 .container {
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
 }
@@ -41,25 +85,31 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   padding: 1rem 1.5rem;
-  background: $color-dark;
+  background: $navy-700;
   color: #fff;
 
   &-brand {
+    font-family: $font-heading;
     color: #fff;
-    font-weight: 700;
+    font-weight: 600;
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    letter-spacing: 0.01em;
   }
 
   &-links {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 1.25rem;
 
     a {
-      color: #d7dae0;
+      color: rgba(255, 255, 255, 0.8);
       text-decoration: none;
+      font-size: 0.95rem;
 
       &:hover {
         color: #fff;
@@ -73,9 +123,10 @@ body {
     button {
       background: none;
       border: none;
-      color: #d7dae0;
+      color: rgba(255, 255, 255, 0.8);
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      font-family: inherit;
       padding: 0;
 
       &:hover {
@@ -85,8 +136,8 @@ body {
   }
 
   &-user {
-    color: #9aa0ab;
-    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.85rem;
   }
 }
 
@@ -97,8 +148,8 @@ body {
   font-size: 0.95rem;
 
   &-notice {
-    background: #e3f5e6;
-    color: #1f7a3d;
+    background: map.get(map.get($status-colors, approved), bg);
+    color: map.get(map.get($status-colors, approved), fg);
   }
 
   &-alert {
@@ -110,43 +161,37 @@ body {
 // Forms
 
 .field {
-  margin-bottom: 1rem;
+  margin-bottom: 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.4rem;
   max-width: 400px;
 
   label {
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    color: $ink-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
   }
 }
 
 input,
 select,
 textarea {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid $border;
   border-radius: $radius;
   font-size: 1rem;
   font-family: inherit;
-}
+  color: $ink;
+  background: $surface;
+  transition: border-color 120ms, box-shadow 120ms;
 
-input[type="submit"],
-button {
-  cursor: pointer;
-}
-
-input[type="submit"] {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: $radius;
-  background: $color-primary;
-  color: #fff;
-  font-size: 1rem;
-
-  &:hover {
-    background: $color-primary-hover;
+  &:focus-visible {
+    outline: none;
+    border-color: $navy-600;
+    box-shadow: 0 0 0 3px rgba($navy-600, 0.18);
   }
 }
 
@@ -158,39 +203,133 @@ input[type="submit"] {
   margin-bottom: 1rem;
 }
 
+// Buttons
+
+.btn,
+input[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: $radius;
+  border: 1px solid transparent;
+  font-size: 0.95rem;
+  font-family: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 120ms, border-color 120ms, color 120ms;
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($navy-600, 0.28);
+  }
+}
+
+.btn-primary,
+input[type="submit"] {
+  background: $navy-700;
+  border-color: $navy-700;
+  color: #fff;
+
+  &:hover {
+    background: $navy-600;
+    border-color: $navy-600;
+  }
+}
+
+.btn-secondary {
+  background: transparent;
+  border-color: $border;
+  color: $navy-700;
+
+  &:hover {
+    border-color: $navy-700;
+    background: rgba($navy-700, 0.05);
+  }
+}
+
+.btn-danger {
+  background: transparent;
+  border-color: map.get(map.get($status-colors, rejected), bg);
+  color: map.get(map.get($status-colors, rejected), fg);
+
+  &:hover {
+    border-color: map.get(map.get($status-colors, rejected), fg);
+    background: map.get(map.get($status-colors, rejected), bg);
+  }
+}
+
+.btn-sm {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.85rem;
+}
+
 // Tables
 
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  overflow: hidden;
 }
 
 th,
 td {
   text-align: left;
-  padding: 0.6rem 0.5rem;
-  border-bottom: 1px solid $color-border;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid $border;
 }
 
 th {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  color: $color-muted;
+  letter-spacing: 0.03em;
+  color: $ink-muted;
+  font-weight: 600;
 }
 
-// Status badges (also reused for calendar chips below)
+tbody tr:hover {
+  background: $bg;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+td .btn,
+td form {
+  display: inline-block;
+}
+
+// Status - shared dot motif, reused by badges and calendar chips below
+
+@mixin status-dot {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: currentColor;
+  margin-right: 0.4em;
+}
 
 .status {
-  display: inline-block;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.85rem;
   font-weight: 600;
+
+  &::before {
+    @include status-dot;
+  }
 
   @each $name, $colors in $status-colors {
     &-#{$name} {
-      background: map.get($colors, bg);
       color: map.get($colors, fg);
     }
   }
@@ -213,8 +352,10 @@ th {
     }
 
     a {
-      color: $color-primary;
+      color: $navy-700;
       text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
 
       &:hover {
         text-decoration: underline;
@@ -226,68 +367,109 @@ th {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 1px;
-    background: $color-border;
-    border: 1px solid $color-border;
+    background: $border;
+    border: 1px solid $border;
     border-radius: $radius;
     overflow: hidden;
   }
 
   &-weekday {
-    background: #fff;
-    padding: 0.4rem;
-    font-size: 0.75rem;
+    background: $surface;
+    padding: 0.5rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    color: $color-muted;
+    letter-spacing: 0.03em;
+    color: $ink-muted;
     text-align: center;
+    font-weight: 600;
   }
 
   &-day {
-    background: #fff;
-    min-height: 90px;
-    padding: 0.35rem;
+    background: $surface;
+    min-height: 96px;
+    padding: 0.4rem;
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.25rem;
 
     &.is-outside {
-      background: #fafafb;
+      background: $bg;
 
       .calendar-date {
-        color: #c4c7cd;
+        color: #b7bcc8;
       }
-    }
-
-    &.is-today .calendar-date {
-      background: $color-primary;
-      color: #fff;
-      border-radius: 999px;
     }
   }
 
   &-date {
     font-size: 0.8rem;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.6rem;
+    height: 1.6rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    color: $ink-muted;
+  }
+
+  &-day.is-today &-date {
+    background: $navy-700;
+    color: #fff;
+    border-radius: 50%;
+    font-weight: 600;
   }
 
   &-chip {
-    display: block;
-    padding: 0.15rem 0.4rem;
-    border-radius: $radius;
-    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
     text-decoration: none;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: $ink;
+    background: $bg;
+    transition: background-color 120ms;
+
+    &::before {
+      @include status-dot;
+      flex-shrink: 0;
+    }
 
     @each $name, $colors in $status-colors {
       &.status-#{$name} {
-        background: map.get($colors, bg);
         color: map.get($colors, fg);
+
+        &::before {
+          color: map.get($colors, fg);
+        }
+
+        &:hover {
+          background: map.get($colors, bg);
+        }
       }
     }
+  }
+}
+
+// Mobile
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1.25rem 1rem;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .calendar-day {
+    min-height: 64px;
+  }
+
+  .calendar-chip {
+    font-size: 0.65rem;
   }
 }
