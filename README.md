@@ -14,9 +14,14 @@ Three roles:
 
 Ruby/Rails version: see `.ruby-version` (Ruby 3.4.8, Rails 8.1).
 
+## Requirements
+
+- MySQL running locally (uses the `mysql2` gem, see `config/database.yml`)
+
 ## Setup
 
 ```
+cp .env.example .env   # adjust if your local MySQL needs different credentials
 bundle install
 rails db:create db:migrate db:seed
 bin/dev
