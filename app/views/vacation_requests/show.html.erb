@@ -2,15 +2,15 @@
 
 <ul>
   <li><strong>Employee:</strong> <%= @vacation_request.user.name %></li>
-  <li><strong>Start date:</strong> <%= @vacation_request.start_date %></li>
-  <li><strong>End date:</strong> <%= @vacation_request.end_date %></li>
+  <li><strong>Start date:</strong> <%= @vacation_request.start_date.strftime("%d %m %Y") %></li>
+  <li><strong>End date:</strong> <%= @vacation_request.end_date.strftime("%d %m %Y") %></li>
   <li><strong>Reason:</strong> <%= @vacation_request.reason %></li>
   <li><strong>Status:</strong> <span class="status status-<%= @vacation_request.status %>"><%= @vacation_request.status.humanize %></span></li>
 </ul>
 
 <% if @vacation_request.user == current_user && @vacation_request.pending? %>
-  <%= link_to "Edit", edit_vacation_request_path(@vacation_request) %>
-  <%= button_to "Cancel", vacation_request_path(@vacation_request), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+  <%= link_to "Edit", edit_vacation_request_path(@vacation_request), class: "btn btn-secondary" %>
+  <%= button_to "Cancel", vacation_request_path(@vacation_request), method: :delete, class: "btn btn-danger", data: { turbo_confirm: "Are you sure?" } %>
 <% end %>
 
 <h2>Decisions</h2>
