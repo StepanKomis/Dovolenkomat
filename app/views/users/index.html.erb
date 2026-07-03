@@ -1,0 +1,29 @@
+<h1>Users</h1>
+
+<%= link_to "New user", new_user_path %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.role %></td>
+        <td>
+          <%= link_to "Edit", edit_user_path(user) %>
+          <% unless user == current_user %>
+            <%= button_to "Delete", user_path(user), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

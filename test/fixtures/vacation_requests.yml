@@ -4,12 +4,10 @@ one:
   start_date: 2026-07-03
   end_date: 2026-07-03
   reason: MyText
-  status: 1
   user: one
 
 two:
   start_date: 2026-07-03
   end_date: 2026-07-03
   reason: MyText
-  status: 1
   user: two

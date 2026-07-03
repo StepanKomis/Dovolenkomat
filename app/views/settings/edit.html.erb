@@ -1,0 +1,20 @@
+<h1>Vacation policy</h1>
+
+<%= form_with model: @setting, url: settings_path, method: :patch do |f| %>
+  <% if @setting.errors.any? %>
+    <div class="error-messages">
+      <ul>
+        <% @setting.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :max_concurrent_vacationers, "Max employees on vacation at once" %>
+    <%= f.number_field :max_concurrent_vacationers, min: 1 %>
+  </div>
+
+  <%= f.submit "Save" %>
+<% end %>

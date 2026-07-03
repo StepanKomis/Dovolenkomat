@@ -1,0 +1,58 @@
+<h1>Vacation request</h1>
+
+<ul>
+  <li><strong>Employee:</strong> <%= @vacation_request.user.name %></li>
+  <li><strong>Start date:</strong> <%= @vacation_request.start_date %></li>
+  <li><strong>End date:</strong> <%= @vacation_request.end_date %></li>
+  <li><strong>Reason:</strong> <%= @vacation_request.reason %></li>
+  <li><strong>Status:</strong> <span class="status status-<%= @vacation_request.status %>"><%= @vacation_request.status.humanize %></span></li>
+</ul>
+
+<% if @vacation_request.user == current_user && @vacation_request.pending? %>
+  <%= link_to "Edit", edit_vacation_request_path(@vacation_request) %>
+  <%= button_to "Cancel", vacation_request_path(@vacation_request), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+<% end %>
+
+<h2>Decisions</h2>
+
+<ul>
+  <li>
+    <strong>HR:</strong>
+    <% if @vacation_request.hr_status_pending? %>
+      Awaiting decision
+    <% else %>
+      <%= @vacation_request.hr_status.humanize %> by <%= @vacation_request.hr_decided_by&.name %>
+      <% if @vacation_request.hr_comment.present? %>("<%= @vacation_request.hr_comment %>")<% end %>
+    <% end %>
+  </li>
+  <li>
+    <strong>Head:</strong>
+    <% if @vacation_request.head_status_pending? %>
+      Awaiting decision
+    <% else %>
+      <%= @vacation_request.head_status.humanize %> by <%= @vacation_request.head_decided_by&.name %>
+      <% if @vacation_request.head_comment.present? %>("<%= @vacation_request.head_comment %>")<% end %>
+    <% end %>
+  </li>
+</ul>
+
+<% can_decide = (current_user.hr? && @vacation_request.hr_status_pending?) ||
+                (current_user.head? && @vacation_request.head_status_pending? &&
+                 !@vacation_request.hr_status_rejected?) %>
+
+<% if can_decide %>
+  <h3>Your decision</h3>
+  <%= form_with url: vacation_request_decisions_path(@vacation_request), method: :post, scope: :decision do |f| %>
+    <div class="field">
+      <%= f.label :outcome %>
+      <%= f.select :outcome, %w[approved rejected] %>
+    </div>
+
+    <div class="field">
+      <%= f.label :comment %>
+      <%= f.text_field :comment %>
+    </div>
+
+    <%= f.submit "Submit decision" %>
+  <% end %>
+<% end %>

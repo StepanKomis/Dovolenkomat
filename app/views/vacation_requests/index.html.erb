@@ -1,0 +1,30 @@
+<h1>Vacation requests</h1>
+
+<%= link_to "New request", new_vacation_request_path %>
+
+<div class="calendar">
+  <div class="calendar-header">
+    <%= link_to "‹ Prev", vacation_requests_path(year: @prev_month.year, month: @prev_month.month) %>
+    <h2><%= Date::MONTHNAMES[@month] %> <%= @year %></h2>
+    <%= link_to "Next ›", vacation_requests_path(year: @next_month.year, month: @next_month.month) %>
+  </div>
+
+  <div class="calendar-grid">
+    <% %w[Mon Tue Wed Thu Fri Sat Sun].each do |wd| %>
+      <div class="calendar-weekday"><%= wd %></div>
+    <% end %>
+
+    <% calendar_weeks(year: @year, month: @month, vacation_requests: @vacation_requests).each do |week| %>
+      <% week.each do |day| %>
+        <div class="calendar-day<%= " is-outside" unless day.in_month %><%= " is-today" if day.date == Date.current %>">
+          <span class="calendar-date"><%= day.date.day %></span>
+          <% day.requests.each do |vr| %>
+            <%= link_to vacation_request_path(vr), class: "calendar-chip status-#{vr.status}" do %>
+              <%= current_user.employee? ? vr.status.humanize : vr.user.name %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

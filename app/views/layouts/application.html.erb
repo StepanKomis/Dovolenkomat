@@ -24,6 +24,27 @@
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar">
+      <%= link_to "Dovolenkomat", root_path, class: "navbar-brand" %>
+      <% if current_user %>
+        <span class="navbar-links">
+          <%= link_to "Requests", vacation_requests_path %>
+          <% if current_user.head? %>
+            <%= link_to "Users", users_path %>
+            <%= link_to "Settings", edit_settings_path %>
+          <% end %>
+          <span class="navbar-user"><%= current_user.name %> (<%= current_user.role %>)</span>
+          <%= button_to "Log out", logout_path, method: :delete %>
+        </span>
+      <% end %>
+    </nav>
+
+    <% flash.each do |type, message| %>
+      <div class="flash flash-<%= type %>"><%= message %></div>
+    <% end %>
+
+    <main class="container">
+      <%= yield %>
+    </main>
   </body>
 </html>

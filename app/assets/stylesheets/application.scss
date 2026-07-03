@@ -1,0 +1,293 @@
+// Dovolenkomat base styles
+
+@use "sass:map";
+
+$color-bg: #f5f6f8;
+$color-text: #1f2430;
+$color-dark: #1f2430;
+$color-primary: #2d5be3;
+$color-primary-hover: #2249c0;
+$color-border: #e0e2e7;
+$color-muted: #6b7280;
+$radius: 4px;
+
+$status-colors: (
+  pending: (bg: #fff3cd, fg: #8a6100),
+  hr_approved: (bg: #dbe8ff, fg: #1d4ed8),
+  approved: (bg: #d7f5df, fg: #1f7a3d),
+  rejected: (bg: #fbe4e2, fg: #a3271f),
+);
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: $color-bg;
+  color: $color-text;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+// Navbar
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: $color-dark;
+  color: #fff;
+
+  &-brand {
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1.1rem;
+  }
+
+  &-links {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+
+    a {
+      color: #d7dae0;
+      text-decoration: none;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    form {
+      display: inline;
+    }
+
+    button {
+      background: none;
+      border: none;
+      color: #d7dae0;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 0;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  &-user {
+    color: #9aa0ab;
+    font-size: 0.9rem;
+  }
+}
+
+// Flash messages
+
+.flash {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+
+  &-notice {
+    background: #e3f5e6;
+    color: #1f7a3d;
+  }
+
+  &-alert {
+    background: map.get(map.get($status-colors, rejected), bg);
+    color: map.get(map.get($status-colors, rejected), fg);
+  }
+}
+
+// Forms
+
+.field {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 400px;
+
+  label {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+}
+
+input,
+select,
+textarea {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: $radius;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+input[type="submit"],
+button {
+  cursor: pointer;
+}
+
+input[type="submit"] {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: $radius;
+  background: $color-primary;
+  color: #fff;
+  font-size: 1rem;
+
+  &:hover {
+    background: $color-primary-hover;
+  }
+}
+
+.error-messages {
+  background: map.get(map.get($status-colors, rejected), bg);
+  color: map.get(map.get($status-colors, rejected), fg);
+  border-radius: $radius;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+// Tables
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid $color-border;
+}
+
+th {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: $color-muted;
+}
+
+// Status badges (also reused for calendar chips below)
+
+.status {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  @each $name, $colors in $status-colors {
+    &-#{$name} {
+      background: map.get($colors, bg);
+      color: map.get($colors, fg);
+    }
+  }
+}
+
+// Calendar
+
+.calendar {
+  margin-top: 1.5rem;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+    h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    a {
+      color: $color-primary;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: $color-border;
+    border: 1px solid $color-border;
+    border-radius: $radius;
+    overflow: hidden;
+  }
+
+  &-weekday {
+    background: #fff;
+    padding: 0.4rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: $color-muted;
+    text-align: center;
+  }
+
+  &-day {
+    background: #fff;
+    min-height: 90px;
+    padding: 0.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    &.is-outside {
+      background: #fafafb;
+
+      .calendar-date {
+        color: #c4c7cd;
+      }
+    }
+
+    &.is-today .calendar-date {
+      background: $color-primary;
+      color: #fff;
+      border-radius: 999px;
+    }
+  }
+
+  &-date {
+    font-size: 0.8rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-chip {
+    display: block;
+    padding: 0.15rem 0.4rem;
+    border-radius: $radius;
+    font-size: 0.7rem;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @each $name, $colors in $status-colors {
+      &.status-#{$name} {
+        background: map.get($colors, bg);
+        color: map.get($colors, fg);
+      }
+    }
+  }
+}

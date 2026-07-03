@@ -1,0 +1,28 @@
+<%= form_with model: vacation_request do |f| %>
+  <% if vacation_request.errors.any? %>
+    <div class="error-messages">
+      <ul>
+        <% vacation_request.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :start_date %>
+    <%= f.date_field :start_date %>
+  </div>
+
+  <div class="field">
+    <%= f.label :end_date %>
+    <%= f.date_field :end_date %>
+  </div>
+
+  <div class="field">
+    <%= f.label :reason %>
+    <%= f.text_area :reason %>
+  </div>
+
+  <%= f.submit %>
+<% end %>

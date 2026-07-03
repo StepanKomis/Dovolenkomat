@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_02_231305) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_03_110613) do
+  create_table "settings", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "max_concurrent_vacationers", default: 2, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "updated_by_id"
+    t.index ["updated_by_id"], name: "index_settings_on_updated_by_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email"
@@ -20,4 +28,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_02_231305) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
+
+  create_table "vacation_requests", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "end_date"
+    t.string "head_comment"
+    t.datetime "head_decided_at"
+    t.bigint "head_decided_by_id"
+    t.integer "head_status", default: 0, null: false
+    t.string "hr_comment"
+    t.datetime "hr_decided_at"
+    t.bigint "hr_decided_by_id"
+    t.integer "hr_status", default: 0, null: false
+    t.text "reason"
+    t.date "start_date"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["head_decided_by_id"], name: "index_vacation_requests_on_head_decided_by_id"
+    t.index ["hr_decided_by_id"], name: "index_vacation_requests_on_hr_decided_by_id"
+    t.index ["user_id"], name: "index_vacation_requests_on_user_id"
+  end
+
+  add_foreign_key "settings", "users", column: "updated_by_id"
+  add_foreign_key "vacation_requests", "users"
+  add_foreign_key "vacation_requests", "users", column: "head_decided_by_id"
+  add_foreign_key "vacation_requests", "users", column: "hr_decided_by_id"
 end
